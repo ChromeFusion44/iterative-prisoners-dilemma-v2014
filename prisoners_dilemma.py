@@ -201,9 +201,9 @@ def get_action(player, history, opponent_history, score, opponent_score, getting
     #
     elif player == 4:
         if getting_team_name:
-            #if there was a previous round just like 
             return 'JOHN PLAYER'
         else:  
+            trust = 0
             if len(opponent_history)==0: #Collude on the first round
                 return 'c'
             else:
@@ -221,13 +221,41 @@ def get_action(player, history, opponent_history, score, opponent_score, getting
                             (prior_round_opponent == recent_round_opponent):
                         return opponent_history[round]
                 # no match found
-                if history[-1]=='c' and opponent_history[-1]=='b':
-                    return 'b' # betray is they were severely punished last time
+                #Basic backstabber detection
+                if opponent_score > 50: 
+                    return 'b'
+                if len(opponent_history)>0:
+                    if opponent_history[-1] =='b':
+                        trust -= 1
+                if len(opponent_history)>1:
+                    if opponent_history[-2]=='b':
+                        trust -= 1
+                if len(opponent_history)>2:
+                    if opponent_history[-3]=='b':
+                        trust -= 1
+                if len(opponent_history)>0:
+                    if opponent_history[-1] =='c':
+                        trust += 1
+                if len(opponent_history)>1:
+                    if opponent_history[-2]=='c':
+                        trust += 1
+                if len(opponent_history)>2:
+                    if opponent_history[-3]=='c':
+                        trust += 1
+                #If opponent betrayed last round and two rounds ago, betray them
+                elif history[-1]=='c' and opponent_history[-1]=='b' and opponent_history[-2]=='b':
+                    return 'b'
+                #If opponent betrayed last round, 50/50 chance of betraying them
+                elif history[-1]=='c' and opponent_history[-1]=='b':
+                    possible_choice = random.randint(1, 2)
+                    if possible_choice == 1:
+                        return 'b'
+                    else:
+                       return 'c'
                 else:
-                    return 'c' #otherwise collude
-    
-    
-    
+                    return 'c'
+                    
+
 
 
 
