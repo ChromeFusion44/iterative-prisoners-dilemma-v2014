@@ -204,11 +204,14 @@ def get_action(player, history, opponent_history, score, opponent_score, getting
             return 'JOHN PLAYER'
         else:  
             trust = 0
-
             #Collude on the first round
             if len(opponent_history)==0:
                 return 'c'
             else:
+                print("niubbyu87guhbik")
+                if len(opponent_history)==0:
+                    print('ugh why')
+                    return 'c'
                 if len(opponent_history)>0:
                     if opponent_history[-1] =='b':
                         trust -= 1
