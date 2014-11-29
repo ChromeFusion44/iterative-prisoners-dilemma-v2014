@@ -204,29 +204,15 @@ def get_action(player, history, opponent_history, score, opponent_score, getting
             return 'JOHN PLAYER'
         else:  
             trust = 0
-            if len(opponent_history)==0: #Collude on the first round
+
+            #Collude on the first round
+            if len(opponent_history)==0:
                 return 'c'
             else:
-                # if there was a previous round just like the last one,
-                # do whatever they did in the round that followed it
-                recent_round_opponent = opponent_history[-1]
-                recent_round_me = history[-1]
-                            
-                #go through rounds before that one
-                for round in range(len(history)-1):
-                    prior_round_opponent = opponent_history[round]
-                    prior_round_me = history[round]
-                    #if one matches
-                    if (prior_round_me == recent_round_me) and \
-                            (prior_round_opponent == recent_round_opponent):
-                        return opponent_history[round]
-                # no match found
-                #Basic backstabber detection
-                if opponent_score > 50: 
-                    return 'b'
                 if len(opponent_history)>0:
                     if opponent_history[-1] =='b':
                         trust -= 1
+                        print("Dwweh")
                 if len(opponent_history)>1:
                     if opponent_history[-2]=='b':
                         trust -= 1
@@ -242,19 +228,30 @@ def get_action(player, history, opponent_history, score, opponent_score, getting
                 if len(opponent_history)>2:
                     if opponent_history[-3]=='c':
                         trust += 1
-                #If opponent betrayed last round and two rounds ago, betray them
-                elif history[-1]=='c' and opponent_history[-1]=='b' and opponent_history[-2]=='b':
+                        print("trust is", trust)
+                #Betray if trust is at or below -3
+                elif trust <= -3:
                     return 'b'
-                #If opponent betrayed last round, 50/50 chance of betraying them
-                elif history[-1]=='c' and opponent_history[-1]=='b':
+                    print("auto-betray")
+                #50% chance of betraying if trust is at -2
+                elif trust == -2:
                     possible_choice = random.randint(1, 2)
                     if possible_choice == 1:
                         return 'b'
-                    else:
-                       return 'c'
+                        ("50 betray")
+                #33% chance of betraying if trust is at -1
+                elif trust == -1:
+                    possible_choice = random.randint(1, 3)
+                    if possible_choice == 1:
+                        return 'b'
+                        print("33 betray")
+                #Collude if trust is 0 or above
+                elif trust >= 0:
+                    return 'c'
+                    print("I trust and colluded")
                 else:
                     return 'c'
-                    
+            print("Jfc")
 
 
 
