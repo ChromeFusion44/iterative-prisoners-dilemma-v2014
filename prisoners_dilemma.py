@@ -206,55 +206,64 @@ def get_action(player, history, opponent_history, score, opponent_score, getting
             trust = 0
             #Collude on the first round
             if len(opponent_history)==0:
+                print("It's the first round, so I will collude.")
                 return 'c'
             else:
-                print("niubbyu87guhbik")
+                print("Beginning trust test...")
                 if len(opponent_history)==0:
-                    print('ugh why')
                     return 'c'
                 if len(opponent_history)>0:
                     if opponent_history[-1] =='b':
                         trust -= 1
-                        print("Dwweh")
+                        print("Trust down 1 on test 1")
                 if len(opponent_history)>1:
                     if opponent_history[-2]=='b':
                         trust -= 1
+                        print("Trust down 1 on test 2")
                 if len(opponent_history)>2:
                     if opponent_history[-3]=='b':
                         trust -= 1
+                        print("Trust down 1 on test 3")
                 if len(opponent_history)>0:
                     if opponent_history[-1] =='c':
                         trust += 1
+                        print("Trust up 1 on test 4")
                 if len(opponent_history)>1:
                     if opponent_history[-2]=='c':
                         trust += 1
+                        print("Trust up 1 on test 5")
                 if len(opponent_history)>2:
                     if opponent_history[-3]=='c':
                         trust += 1
-                        print("trust is", trust)
+                        print("Trust up 1 on test 6")
                 #Betray if trust is at or below -3
-                elif trust <= -3:
-                    return 'b'
+                if trust <= -3:
                     print("auto-betray")
+                    return 'b'
                 #50% chance of betraying if trust is at -2
-                elif trust == -2:
+                if trust == -2:
                     possible_choice = random.randint(1, 2)
                     if possible_choice == 1:
+                        print("50 betray")
                         return 'b'
-                        ("50 betray")
+                    else:
+                        return 'c'
                 #33% chance of betraying if trust is at -1
-                elif trust == -1:
+                if trust == -1:
                     possible_choice = random.randint(1, 3)
                     if possible_choice == 1:
-                        return 'b'
                         print("33 betray")
+                        return 'b'
+                    else:
+                        return 'c'
                 #Collude if trust is 0 or above
                 elif trust >= 0:
-                    return 'c'
                     print("I trust and colluded")
-                else:
                     return 'c'
-            print("Jfc")
+                else:
+                    print("Error. Colluding...")
+                    return 'c'
+            print("trust is", trust)
 
 
 
