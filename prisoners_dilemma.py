@@ -16,7 +16,7 @@ Aggregated results are stored in tournament.txt
 Unpublished work (c)2013 Project Lead The Way
 CSE Project 1.3.5 Collaborating on a Project
 Draft, Do Not Distribute
-Version 8/23/2013 
+Version 11/21/2018
 '''
 
 import random
@@ -201,18 +201,56 @@ def get_action(player, history, opponent_history, score, opponent_score, getting
     #
     elif player == 4:
         if getting_team_name:
-            return 'betray every 3rd round'
-        else:
-            # use history, opponent_history, score, opponent_score
-            # to compute your strategy
-            size = len(history)
-            if(size%3==0): #the number of rounds played is a multiple of 3
+            return 'Aperture Science'
+        else:  
+            trust = 0
+            #Collude on the first round
+            if len(opponent_history)==0:
                 return 'c'
             else:
-                return 'b'
-    
-    
-    
+                if len(opponent_history)==0:
+                    return 'c'
+                if len(opponent_history)>0:
+                    if opponent_history[-1] =='b':
+                        trust -= 1
+                if len(opponent_history)>1:
+                    if opponent_history[-2]=='b':
+                        trust -= 1
+                if len(opponent_history)>2:
+                    if opponent_history[-3]=='b':
+                        trust -= 1
+                if len(opponent_history)>0:
+                    if opponent_history[-1] =='c':
+                        trust += 1
+                if len(opponent_history)>1:
+                    if opponent_history[-2]=='c':
+                        trust += 1
+                if len(opponent_history)>2:
+                    if opponent_history[-3]=='c':
+                        trust += 1
+                #Betray if trust is at or below -3
+                if trust <= -3:
+                    return 'b'
+                #50% chance of betraying if trust is at -2
+                if trust == -2:
+                    possible_choice = random.randint(1, 2)
+                    if possible_choice == 1:
+                        return 'b'
+                    else:
+                        return 'c'
+                #33% chance of betraying if trust is at -1
+                if trust == -1:
+                    possible_choice = random.randint(1, 3)
+                    if possible_choice == 1:
+                        return 'b'
+                    else:
+                        return 'c'
+                #Collude if trust is 0 or above
+                elif trust >= 0:
+                    return 'c'
+                else:
+                    return 'c'
+
 
 
 
