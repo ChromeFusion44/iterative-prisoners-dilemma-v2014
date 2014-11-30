@@ -201,7 +201,7 @@ def get_action(player, history, opponent_history, score, opponent_score, getting
     #
     elif player == 4:
         if getting_team_name:
-            return 'Aperture Science'
+            return 'ADA'
         else:  
             trust = 0
             #Collude on the first round
