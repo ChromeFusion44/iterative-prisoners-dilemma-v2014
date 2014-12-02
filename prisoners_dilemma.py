@@ -208,8 +208,16 @@ def get_action(player, history, opponent_history, score, opponent_score, getting
             if len(opponent_history)==0:
                 return 'c'
             else:
-                if len(opponent_history)==0:
-                    return 'c'
+                #This is the trust system
+                #Because the trust variable is reset every time ADA's algorithm
+                #is called (this ensures that the algorithm's history is recent), 
+                #it must be recalculated every time the algorithm is called
+                #
+                #This section is the calculation/recalculation of the
+                #trust variable. Basically, the algorithm goes through
+                #its opponent's history (if possible) for up to three rounds
+                #and when betrayed, decreases trust by 1, and when colluded
+                #with, increases trust by 1.
                 if len(opponent_history)>0:
                     if opponent_history[-1] =='b':
                         trust -= 1
@@ -248,6 +256,8 @@ def get_action(player, history, opponent_history, score, opponent_score, getting
                 #Collude if trust is 0 or above
                 elif trust >= 0:
                     return 'c'
+                #Basic error handling.
+                #If all else fails, collude.
                 else:
                     return 'c'
 
